@@ -134,37 +134,82 @@ const countriesContainer = document.querySelector('.countries');
 
 // console.log('Test end');
 
-const lotteryPromise = new Promise(function (resolve, reject) {
-  console.log('Lotter draw is happening 🔮');
-  setTimeout(function () {
-    if (Math.random() >= 0.5) {
-      resolve('You WIN 💰');
-    } else {
-      reject(new Error('You lost your money 💩'));
-    }
-  }, 2000);
-});
+// const lotteryPromise = new Promise(function (resolve, reject) {
+//   console.log('Lotter draw is happening 🔮');
+//   setTimeout(function () {
+//     if (Math.random() >= 0.5) {
+//       resolve('You WIN 💰');
+//     } else {
+//       reject(new Error('You lost your money 💩'));
+//     }
+//   }, 2000);
+// });
 
-lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+// lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
 
-// Promisifying setTimeout
+// // Promisifying setTimeout
+// const wait = function (seconds) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
+
+// wait(1)
+//   .then(() => {
+//     console.log('1 second passed');
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log('2 second passed');
+//     return wait(1);
+//   })
+//   .then(() => {
+//     console.log('3 second passed');
+//     return wait(1);
+//   })
+//   .then(() => console.log('4 second passed'));
+
 const wait = function (seconds) {
   return new Promise(function (resolve) {
     setTimeout(resolve, seconds * 1000);
   });
 };
 
-wait(1)
+const imgContainer = document.querySelector(' .images');
+
+const createImage = function (imgPath) {
+  return new Promise(function (resolve, reject) {
+    const img = document.createElement('img');
+    img.src = imgPath;
+
+    img.addEventListener('load', function () {
+      imgContainer.append(img);
+      resolve(img);
+    });
+
+    img.addEventListener('error', function () {
+      reject(new Error('Image not found'));
+    });
+  });
+};
+
+let currentImg;
+createImage('img/img-1.jpg')
   .then(() => {
-    console.log('1 second passed');
-    return wait(1);
+    currentImg = img;
+    console.log('Image 1 loaded');
+    return wait(2);
   })
   .then(() => {
-    console.log('2 second passed');
-    return wait(1);
+    currentImg.style.display = 'none';
+    return createImage('img/img-2.jpg');
   })
   .then(() => {
-    console.log('3 second passed');
-    return wait(1);
+    currentImg = img;
+    console.log('Image 2 loaded');
+    return wait(2);
   })
-  .then(() => console.log('4 second passed'));
+  .then(() => {
+    currentImg.style.display = 'none';
+  })
+  .catch(err => console.log(err));
