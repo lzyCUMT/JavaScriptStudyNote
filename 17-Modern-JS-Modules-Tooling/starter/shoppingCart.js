@@ -1,8 +1,8 @@
 console.log('Exporing module');
 
-console.log('Start fetching user...');
-await fetching('https://jsonplaceholder.typicode.com/users');
-console.log('User fetched');
+// console.log('Start fetching user...');
+// await fetching('https://jsonplaceholder.typicode.com/users');
+// console.log('User fetched');
 
 const shippingCost = 10;
 const cart = [];
